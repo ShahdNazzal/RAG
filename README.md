@@ -411,7 +411,7 @@ The project structure and implementation reflect practical work with the technol
 
 **Shahed Nazzal**
 
-Artificial Intelligence & Data Science Graduate
+AI ENGINEER
 
 GitHub:
 https://github.com/ShahdNazzal
