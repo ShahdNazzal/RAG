@@ -1,151 +1,425 @@
-# mini-rag
+# RAG — AI-Powered Knowledge Assistant
 
-This is a minimal implementation of the RAG model for question answering.
+An AI-powered Retrieval-Augmented Generation (RAG) system designed to answer questions from a collection of internal documents using semantic search, vector embeddings, and Large Language Models.
 
-## The Course
+The system combines document processing, vector search, and LLM-based response generation to provide relevant, context-aware answers grounded in the available knowledge base.
 
-This is an educational project where all of the codes where explained (step by step) via a set of `Arabic` youtube videos. Please check the list:
+---
 
-| # | Title                                    | Link                                                                                                 | Codes                                              |
-|---|------------------------------------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-| 1 | About the Course ماذا ولمـــاذا          | [Video](https://www.youtube.com/watch?v=Vv6e2Rb1Q6w&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj)         | NA                                                 |
-| 2 | What will we build ماذا سنبنى في المشروع | [Video](https://www.youtube.com/watch?v=_l5S5CdxE-Q&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj&index=2) | NA                                                 |
-| 3 | Setup your tools الأدوات الأساسية        | [Video](https://www.youtube.com/watch?v=VSFbkFRAT4w&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj&index=3) | NA                                                 |
-| 4 | Project Architecture                     | [Video](https://www.youtube.com/watch?v=Ei_nBwBbFUQ&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj&index=4) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-001) |
-| 5 | Welcome to FastAPI                       | [Video](https://www.youtube.com/watch?v=cpOuCdzN_Mo&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj&index=5) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-002) |
-| 6 | Nested Routes + Env Values               | [Video](https://www.youtube.com/watch?v=CrR2Bz2Y7Hw&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj&index=6) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-003) |
-| 7 | Uploading a File                         | [Video](https://www.youtube.com/watch?v=5alMKCbFqWs&list=PLvLvlVqNQGHCUR2p0b8a0QpVjDUg50wQj&index=7) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-004) |
-| 8 | File Processing                         | [Video](https://www.youtube.com/watch?v=gQgr2iwtSBw) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-005) |
-| 9 | Docker - MongoDB - Motor                         | [Video](https://www.youtube.com/watch?v=2NOKWm0xJAk) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-006) |
-| 10 | Mongo Schemes and Models                        | [Video](https://www.youtube.com/watch?v=zgcnnMJXXV8) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-007) |
-| 11 | Mongo Indexing                        | [Video](https://www.youtube.com/watch?v=iO8FAmUVcjE) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-008) |
-| 12 | Data Pipeline Enhancements                        | [Video](https://www.youtube.com/watch?v=4x1DuezZBDU) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-008) |
-| 13 | Checkpoint-1                        | [Video](https://www.youtube.com/watch?v=7xIsZkCisPk) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-008) |
-| 14 | LLM Factory                        | [Video](https://www.youtube.com/watch?v=5TKRIFtIQAY) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-008) |
-| 15 | Vector DB Factory                        | [Video](https://www.youtube.com/watch?v=JtS9UkvF_10) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-009) |
-| 16 | Semantic Search                       | [Video](https://www.youtube.com/watch?v=V3swQKokJW8) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-010) |
-| 17 | Augmented Answers                       | [Video](https://www.youtube.com/watch?v=1Wx8BoM5pLU) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-011) |
-| 18 | Checkpoint-1 + Fix Issues                       | [Video](https://youtu.be/6zG4Idxldvg) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-012) |
-| 19 | Ollama Local LLM Server                       | [Video](https://youtu.be/-epZ1hAAtrs) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-012) |
-| 20 | From Mongo to Postgres + SQLAlchemy & Alembic                       | [Video](https://www.youtube.com/watch?v=BVOq7Ek2Up0) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-013) |
-| 21 | The way to PgVector                       | [Video](https://www.youtube.com/watch?v=g99yq5zlYAE) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-014) |
-| 22 | App Deployments 1/2                       | [Video](https://www.youtube.com/watch?v=7QRPnAbVssg) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-015) |
-| 22 | App Deployments 2/2                       | [Video](https://www.youtube.com/watch?v=qJ5Hdyc4hDc) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-015) |
-| 24 | Celery Workers 1/2                       | [Video](https://www.youtube.com/watch?v=pX-iWWT2TJo) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-016) |
-| 25 | Celery Workers 2/2                       | [Video](https://www.youtube.com/watch?v=SZ5Aznjf8Kc) | [branch](https://github.com/bakrianoo/mini-rag/tree/tut-017) |
+## Overview
 
+Traditional LLM applications can generate answers without having access to an organization's private or domain-specific information.
 
+This project addresses that limitation using **Retrieval-Augmented Generation (RAG)**.
 
+Instead of relying only on the language model's pre-trained knowledge, the system:
 
-## Requirements
+1. Processes uploaded documents.
+2. Extracts and prepares their content.
+3. Generates vector embeddings.
+4. Stores the embeddings in a vector database.
+5. Retrieves the most relevant information for a user's question.
+6. Provides the retrieved context to an LLM.
+7. Generates an answer based on the retrieved information.
 
-- Python 3.10
+### Architecture
 
-#### Install Dependencies
-
-```bash
-sudo apt update
-sudo apt install libpq-dev gcc python3-dev
+```text
+                ┌─────────────────────┐
+                │       User          │
+                │   Ask a Question    │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │    FastAPI Backend   │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   Query Processing   │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   Vector Search      │
+                │     pgvector         │
+                └──────────┬──────────┘
+                           │
+                  Relevant Context
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │        LLM          │
+                │  Response Generation│
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   Grounded Answer   │
+                └─────────────────────┘
 ```
 
-#### Install Python using MiniConda
+---
 
-1) Download and install MiniConda from [here](https://docs.anaconda.com/free/miniconda/#quick-command-line-install)
-2) Create a new environment using the following command:
-```bash
-$ conda create -n mini-rag python=3.10
+## Key Features
+
+### Document Processing
+
+The system supports processing documents and preparing their content for semantic retrieval.
+
+The processing pipeline includes:
+
+* Document ingestion
+* Text extraction
+* Content preprocessing
+* Text chunking
+* Embedding generation
+* Vector storage
+
+### Semantic Search
+
+Instead of matching questions using exact keywords, the system uses semantic similarity to retrieve information that is conceptually relevant to the user's query.
+
+### Retrieval-Augmented Generation
+
+Retrieved document chunks are provided to the language model as contextual information before generating the final response.
+
+This helps the system produce answers that are more closely grounded in the available documents.
+
+### Vector Database
+
+Document embeddings are stored in a vector database using **PostgreSQL + pgvector**, allowing efficient similarity-based retrieval.
+
+### LLM Provider Architecture
+
+The project uses a provider-based architecture for language models.
+
+This makes it possible to integrate different LLM providers without tightly coupling the application to a single provider.
+
+### Background Processing
+
+Long-running operations such as data processing and indexing can be handled through **Celery workers**, allowing these tasks to run independently from the API server.
+
+### API-Based Backend
+
+The backend is implemented using **FastAPI** and exposes endpoints for application functionality such as data processing and retrieval.
+
+---
+
+## Technology Stack
+
+### Backend
+
+* Python
+* FastAPI
+* Pydantic
+* SQLAlchemy
+* Alembic
+
+### AI / NLP
+
+* Large Language Models (LLMs)
+* Retrieval-Augmented Generation (RAG)
+* Text Embeddings
+* Semantic Search
+* Natural Language Processing
+
+### Database
+
+* PostgreSQL
+* pgvector
+
+### Background Processing
+
+* Celery
+* Celery Beat
+* Flower
+
+### Infrastructure
+
+* Docker
+* Docker Compose
+
+### Development
+
+* Git
+* GitHub
+* Linux / WSL
+* Postman
+
+---
+
+## Project Structure
+
+```text
+mini-rag/
+│
+├── docker/
+│   ├── docker-compose.yml
+│   ├── minirag/
+│   │   ├── Dockerfile
+│   │   └── entrypoint.sh
+│   └── ...
+│
+├── src/
+│   ├── controllers/
+│   ├── helpers/
+│   ├── routes/
+│   ├── stores/
+│   │   ├── llm/
+│   │   │   └── providers/
+│   │   └── vectordb/
+│   ├── tasks/
+│   ├── main.py
+│   ├── celery_app.py
+│   ├── requirements.txt
+│   └── ...
+│
+├── .github/
+├── .vscode/
+├── LICENSE
+└── README.md
 ```
-3) Activate the environment:
-```bash
-$ conda activate mini-rag
+
+---
+
+## RAG Pipeline
+
+The core workflow of the application can be summarized as follows:
+
+```text
+Documents
+    │
+    ▼
+Document Processing
+    │
+    ▼
+Text Extraction
+    │
+    ▼
+Text Chunking
+    │
+    ▼
+Embedding Generation
+    │
+    ▼
+Vector Database
+    │
+    ▼
+User Query
+    │
+    ▼
+Query Embedding
+    │
+    ▼
+Semantic Similarity Search
+    │
+    ▼
+Relevant Chunks
+    │
+    ▼
+LLM Context
+    │
+    ▼
+Generated Answer
 ```
 
-### (Optional) Setup you command line interface for better readability
+---
+
+## Environment Configuration
+
+The application uses environment variables for configuration.
+
+Create an environment file based on the provided example:
 
 ```bash
-export PS1="\[\033[01;32m\]\u@\h:\w\n\[\033[00m\]\$ "
+cp .env.example .env
 ```
 
-### (Optional) Run Ollama Local LLM Server using Colab + Ngrok
+Configure the required values in the `.env` file.
 
-- Check the [notebook](https://colab.research.google.com/drive/1KNi3-9KtP-k-93T3wRcmRe37mRmGhL9p?usp=sharing) + [Video](https://youtu.be/-epZ1hAAtrs)
+For example:
+
+```env
+OPENAI_API_KEY=your_api_key
+```
+
+Additional configuration may be required depending on the selected LLM and database providers.
+
+> **Security:** Never commit API keys, passwords, tokens, or other sensitive credentials to GitHub.
+
+---
 
 ## Installation
 
-### Install the required packages
+### 1. Clone the repository
 
 ```bash
-$ pip install -r requirements.txt
+git clone https://github.com/ShahdNazzal/RAG.git
+cd RAG
 ```
 
-### Setup the environment variables
+### 2. Create the Python environment
+
+Python 3.10 is recommended.
+
+Using Conda:
 
 ```bash
-$ cp .env.example .env
+conda create -n mini-rag python=3.10
+conda activate mini-rag
 ```
 
-### Run Alembic Migration
+### 3. Install dependencies
 
 ```bash
-$ alembic upgrade head
+pip install -r src/requirements.txt
 ```
 
-Set your environment variables in the `.env` file. Like `OPENAI_API_KEY` value.
+### 4. Configure environment variables
 
-## Run Docker Compose Services
+Create the required `.env` files using the provided examples and configure the necessary credentials.
+
+---
+
+## Running with Docker
+
+Move to the Docker directory:
 
 ```bash
-$ cd docker
-$ cp .env.example .env
+cd docker
 ```
 
-- update `.env` with your credentials
-
-
+Start the services:
 
 ```bash
-$ cd docker
-$ sudo docker compose up -d
+sudo docker compose up -d
 ```
 
-## Access Services
-
-- **FastAPI**: http://localhost:8000
-- **Flower Dashboard**: http://localhost:5555 (admin/password from env)
-- **Grafana**: http://localhost:3000
-- **Prometheus**: http://localhost:9090
-
-## Run the FastAPI server (Development Mode)
+To check the running containers:
 
 ```bash
-$ uvicorn main:app --reload --host 0.0.0.0 --port 5000
+docker ps
 ```
 
-# Celery (Development Mode)
+---
 
-For development, you can run Celery services manually instead of using Docker:
+## Running the API
 
-To Run the **Celery worker**, you need to run the following command in a separate terminal:
+From the `src` directory:
 
 ```bash
-$ python -m celery -A celery_app worker --queues=default,file_processing,data_indexing --loglevel=info
+uvicorn main:app --reload --host 0.0.0.0 --port 5000
 ```
 
-To run the **Beat scheduler**, you can run the following command in a separate terminal:
+The API will be available at:
+
+```text
+http://localhost:5000
+```
+
+---
+
+## Celery
+
+### Start a Celery Worker
 
 ```bash
-$ python -m celery -A celery_app beat --loglevel=info
+python -m celery -A celery_app worker \
+--queues=default,file_processing,data_indexing \
+--loglevel=info
 ```
 
-To Run **Flower Dashboard**, you can run the following command in a separate terminal:
+### Start Celery Beat
 
 ```bash
-$ python -m celery -A celery_app flower --conf=flowerconfig.py
+python -m celery -A celery_app beat \
+--loglevel=info
 ```
 
+### Start Flower
 
-open your browser and go to `http://localhost:5555` to see the dashboard.
+```bash
+python -m celery -A celery_app flower \
+--conf=flowerconfig.py
+```
 
-## POSTMAN Collection
+Flower can then be accessed through:
 
-Download the POSTMAN collection from [/assets/mini-rag-app.postman_collection.json](/assets/mini-rag-app.postman_collection.json)
+```text
+http://localhost:5555
+```
+
+---
+
+## Available Services
+
+When running the complete Docker environment, the main services include:
+
+| Service    |                      Port |
+| ---------- | ------------------------: |
+| FastAPI    |                    `5000` |
+| Flower     |                    `5555` |
+| Grafana    |                    `3000` |
+| Prometheus |                    `9090` |
+| PostgreSQL | Configured through Docker |
+
+---
+
+## API Testing
+
+The backend APIs can be tested using **Postman**.
+
+A Postman collection can be used to test the available endpoints and the application's data-processing workflow.
+
+---
+
+## Engineering Concepts Demonstrated
+
+This project was developed as a practical implementation of several modern AI engineering concepts:
+
+* Retrieval-Augmented Generation
+* LLM integration
+* Embedding-based information retrieval
+* Vector databases
+* Semantic search
+* REST API development
+* FastAPI
+* Database migrations
+* PostgreSQL
+* pgvector
+* Background task processing
+* Celery
+* Dockerized services
+* Modular provider architecture
+* Environment-based configuration
+
+---
+
+## Learning & Development
+
+This project was developed as part of hands-on learning in **RAG, LLM application development, backend engineering, vector databases, and AI engineering**.
+
+The implementation was adapted and extended while studying these concepts, with additional development and experimentation performed throughout the project.
+
+The project structure and implementation reflect practical work with the technologies listed above.
+
+---
+
+## Author
+
+**Shahed Nazzal**
+
+Artificial Intelligence & Data Science Graduate
+
+GitHub:
+https://github.com/ShahdNazzal
+
+---
+
+## License
+
+This project is provided for educational and development purposes.
+
+Parts of the project were developed while following external educational material. The repository represents my own working implementation, experimentation, configuration, and extensions developed during the learning process.
